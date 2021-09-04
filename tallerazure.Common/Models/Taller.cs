@@ -8,6 +8,8 @@ namespace tallerazure.Common.Models
 
           public string NameEmployee { get; set; }
 
-          public bool IsCompleted { get; set; }
+          public bool IsConsolidated { get; set; }
+
+          public bool TypeReg { get; set; }
      }
 }

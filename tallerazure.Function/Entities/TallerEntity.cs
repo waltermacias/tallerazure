@@ -11,6 +11,8 @@ namespace tallerazure.Function.Entities
 
           public string NameEmployee { get; set; }
 
-          public bool IsCompleted { get; set; }
+          public bool IsConsolidated { get; set; }
+
+          public bool TypeReg { get; set; }
      }
 }
