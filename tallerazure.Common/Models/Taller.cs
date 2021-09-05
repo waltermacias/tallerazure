@@ -11,5 +11,6 @@ namespace tallerazure.Common.Models
           public bool IsConsolidated { get; set; }
 
           public bool TypeReg { get; set; }
-     }
+
+	}
 }

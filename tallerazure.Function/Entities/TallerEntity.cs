@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.WindowsAzure.Storage.Table;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using System;
 
-namespace tallerazure.Function.Entities
+namespace tallerazure.Functions.Entities
 {
      public class TallerEntity : TableEntity
      {
@@ -14,5 +12,6 @@ namespace tallerazure.Function.Entities
           public bool IsConsolidated { get; set; }
 
           public bool TypeReg { get; set; }
-     }
+
+	}
 }
