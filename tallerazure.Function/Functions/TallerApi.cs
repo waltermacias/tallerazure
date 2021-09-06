@@ -112,5 +112,59 @@ namespace tallerazure.Functions.Functions
 			});
 
 		}
+
+		[FunctionName(nameof(GetAllDates))]
+		public static async Task<IActionResult> GetAllDates(
+		    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "taller")] HttpRequest req,
+		    [Table("taller", Connection = "AzureWebJobsStorage")] CloudTable tallerTable,
+			ILogger log)
+		{
+			log.LogInformation("Get all Dates received.");
+
+			TableQuery<TallerEntity> query = new TableQuery<TallerEntity>();
+			TableQuerySegment<TallerEntity> tallers = await tallerTable.ExecuteQuerySegmentedAsync(query, null);
+		
+
+			string message = "Retrieved all dates";
+			log.LogInformation(message);
+
+			return new OkObjectResult(new Response
+			{ 
+				IsSuccess = true,
+				Message = message,
+				Result = tallers
+			});
+		}
+
+		[FunctionName(nameof(GetTallerById))]
+		public static IActionResult GetTallerById(
+		    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "taller/{id}")] HttpRequest req,
+		    [Table("taller", "TALLER", "{id}", Connection = "AzureWebJobsStorage")] TallerEntity tallerEntity,
+		    string id,
+			ILogger log)
+		{
+			log.LogInformation($"Get Date by ID: {id}, received.");
+
+			if (tallerEntity == null)
+			{
+				return new BadRequestObjectResult(new Response
+				{
+					IsSuccess = false,
+					Message = "Taller not found."
+				});
+			}
+
+
+
+			string message = $"Taller: {id}, retrieved";
+			log.LogInformation(message);
+
+			return new OkObjectResult(new Response
+			{
+				IsSuccess = true,
+				Message = message,
+				Result = tallerEntity
+			});
+		}
 	}
 }
