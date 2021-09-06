@@ -25,8 +25,6 @@ namespace tallerazure.Functions.Functions
 		{
 			log.LogInformation("Recieved a new employee.");
 
-			string name = req.Query["name"];
-
 			string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 			Taller taller = JsonConvert.DeserializeObject<Taller>(requestBody);
 
@@ -53,6 +51,57 @@ namespace tallerazure.Functions.Functions
 			await tallerTable.ExecuteAsync(addOperation);
 
 			string message = "New taller stored in Table";
+			log.LogInformation(message);
+
+			return new OkObjectResult(new Response
+			{
+				IsSuccess = true,
+				Message = message,
+				Result = tallerEntity
+			});
+
+		}
+		
+		[FunctionName(nameof(UpdateTaller))]
+		public static async Task<IActionResult> UpdateTaller(
+		    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "taller/{id}")] HttpRequest req,
+		    [Table("taller", Connection = "AzureWebJobsStorage")] CloudTable tallerTable,
+		    string id,
+			ILogger log)
+		{
+			log.LogInformation("Update for taller:{id}, received.");
+
+			string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+			Taller taller = JsonConvert.DeserializeObject<Taller>(requestBody);
+
+			// Validate ID
+
+			TableOperation findOperation = TableOperation.Retrieve<TallerEntity>("TALLER", id);
+			TableResult findResult = await tallerTable.ExecuteAsync(findOperation);
+			if (findResult.Result == null)
+			{ 
+				return new BadRequestObjectResult(new Response
+				{
+					IsSuccess = false,
+					Message = "Taller not found."
+				});
+			}
+
+			//Update taller
+			TallerEntity tallerEntity = (TallerEntity)findResult.Result;
+			tallerEntity.IsConsolidated = taller.IsConsolidated;
+			if (!string.IsNullOrEmpty(taller.NameEmployee))
+			{
+				tallerEntity.NameEmployee = taller.NameEmployee;
+
+			}
+
+			
+
+			TableOperation addOperation = TableOperation.Replace(tallerEntity);
+			await tallerTable.ExecuteAsync(addOperation);
+
+			string message = $"Taller: {id}, updated in table";
 			log.LogInformation(message);
 
 			return new OkObjectResult(new Response
