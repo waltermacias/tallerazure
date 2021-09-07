@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tallerazure.Common", "talle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tallerazure.Functions", "tallerazure.Function\tallerazure.Functions.csproj", "{8C67C602-523A-4598-8C01-CBD05492AF56}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tallerazure.test", "tallerazure.test\tallerazure.test.csproj", "{159F0D41-7E13-4EDC-A70F-69C527D6FDCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tallerazure.Test", "tallerazure.test\tallerazure.Test.csproj", "{159F0D41-7E13-4EDC-A70F-69C527D6FDCD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEE41740-D079-40C9-9B06-1DDDD9C1A65A}"
 	ProjectSection(SolutionItems) = preProject
