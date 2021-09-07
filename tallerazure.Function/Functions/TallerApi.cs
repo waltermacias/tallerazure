@@ -154,9 +154,38 @@ namespace tallerazure.Functions.Functions
 				});
 			}
 
-
-
 			string message = $"Taller: {id}, retrieved";
+			log.LogInformation(message);
+
+			return new OkObjectResult(new Response
+			{
+				IsSuccess = true,
+				Message = message,
+				Result = tallerEntity
+			});
+		}
+
+		[FunctionName(nameof(DeleteReg))]
+		public static async Task<IActionResult> DeleteReg(
+		    [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "taller/{id}")] HttpRequest req,
+		    [Table("taller", "TALLER", "{id}", Connection = "AzureWebJobsStorage")] TallerEntity tallerEntity,
+			[Table("taller", Connection = "AzureWebJobsStorage")] CloudTable tallerTable,
+		    string id,
+			ILogger log)
+		{
+			log.LogInformation($"Delete Registro: {id}, received.");
+
+			if (tallerEntity == null)
+			{
+				return new BadRequestObjectResult(new Response
+				{
+					IsSuccess = false,
+					Message = "Taller not found."
+				});
+			}
+
+			await tallerTable.ExecuteAsync(TableOperation.Delete(tallerEntity));
+			string message = $"Taller: {tallerEntity.RowKey}, deleted.";
 			log.LogInformation(message);
 
 			return new OkObjectResult(new Response
